@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Stock Prices";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4 text-primary">Stock Prices</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    Update Stock Price
+                </div>
+                <div class="card-body">
+                    <form asp-action="UpdateStockPrice" method="post" class="form-inline">
+                        <div class="form-group mb-2 mr-2">
+                            <label for="stockSymbol" class="sr-only">Stock Symbol</label>
+                            <input type="text" name="stockSymbol" class="form-control" placeholder="Stock Symbol" required />
+                        </div>
+                        <div class="form-group mb-2 mr-2">
+                            <label for="stockPrice" class="sr-only">Stock Price</label>
+                            <input type="number" name="stockPrice" class="form-control" placeholder="Stock Price" step="0.01" required />
+                        </div>
+                        <button type="submit" class="btn btn-success mb-2">Update Price</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <img src="https://www.livemint.com/lm-img/img/2024/06/03/600x338/Nifty_1667546435835_1717410694965.jpg" class="img-fluid" alt="Stock Market">
+        </div>
+    </div>
+
+    <h2 class="text-center mb-4 text-primary">Current Stock Prices</h2>
+    <div class="row">
+        @if (Model != null)
+        {
+            var stockPrices = Model.GetStockPrices();
+            if (stockPrices != null && stockPrices.Count > 0)
+            {
+                foreach (var stock in stockPrices)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-info shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">@stock.Key</h5>
+                                <p class="card-text">@stock.Value.ToString("C")</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-warning text-center" role="alert">
+                        No stock data available.
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-danger text-center" role="alert">
+                    Model is null.
+                </div>
+            </div>
+        }
+    </div>
+</div>
